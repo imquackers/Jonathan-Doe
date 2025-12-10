@@ -6,9 +6,12 @@ public class ThrowableTile : MonoBehaviour
 {
     public float breakVelocityThreshold = 20f;   // how hard of a throw to break
     public GameObject breakEffectPrefab;        // particle effect (not made yet)
-    public int damage = 25;                      // damage amount
+    public int damage = 25; //damage amount
+    public bool thrown = false;
 
-    private bool thrown = false;
+    //SFX
+    public AudioSource audioSource;
+    public AudioClip hitEnemySound;
 
     // Call from PlayerPickup when tile thrown
     public void OnThrown()
@@ -25,6 +28,11 @@ public class ThrowableTile : MonoBehaviour
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
+            //play sfx
+            if(audioSource != null && hitEnemySound != null)
+            {
+                audioSource.PlayOneShot(hitEnemySound);
+            }
         }
     }
 
@@ -52,7 +60,7 @@ public class ThrowableTile : MonoBehaviour
 
     void Break()
     {
-        // Spawn break effect if assigned
+        // break effect when made
         if (breakEffectPrefab != null)
         {
             Instantiate(breakEffectPrefab, transform.position, Quaternion.identity);

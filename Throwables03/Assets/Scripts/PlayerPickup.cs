@@ -3,26 +3,26 @@ using UnityEngine;
 public class PlayerPickup : MonoBehaviour
 {
     //Player Setup
-    public Camera playerCamera;
-    public Transform holdPosition;
-    public float pickupRange = 3f;
+    public Camera playerCamera;//main camera
+    public Transform holdPosition;//hold point where object is held
+    public float pickupRange = 3f;//how far player can reach 
 
     //Throwing Setup
-    public float maxThrowForce = 20f;
-    public float chargeSpeed = 10f;
+    public float maxThrowForce = 20f;//maximum force to throw
+    public float chargeSpeed = 10f;//how much it charges the throw
 
-    private GameObject heldObject;
-    private Rigidbody heldRb;
-    private ThrowableTile heldScript;
+    private GameObject heldObject;//the object to be held
+    private Rigidbody heldRb;//needs rigid body to be picked up and thrown
+    private ThrowableTile heldScript;//needs to add the throwable script to whatever is picked up 
 
-    private bool holdingObject = false;
-    private float throwCharge = 0f;
+    private bool holding = false;//not holding anything at the start
+    private float throwCharge = 0f;//throw force up to 20
 
     void Update()
     {
-        if (!holdingObject)
+        if (!holding)
         {
-            TryPickup();
+            TryPickup();//always running
         }
         else
         {
@@ -32,32 +32,30 @@ public class PlayerPickup : MonoBehaviour
 
     void TryPickup()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))//always checking if E is pressed
         {
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out RaycastHit hit, pickupRange)) //checks if the player is looking at something interactable
+            if (Physics.Raycast(ray, out RaycastHit hit, pickupRange)) //always checks if the player is looking at something interactable
             {
-                // ALL interactable objects use tag "Tile"
-                if (hit.collider.CompareTag("Tile"))
+                if (hit.collider.CompareTag("Tile"))//now checks if the player is looking at something with the tag "Tile"
                 {
-                    // Clone the object the player clicked
-                    GameObject original = hit.collider.gameObject;
-                    heldObject = Instantiate(original, holdPosition.position, Quaternion.identity);
+                    GameObject original = hit.collider.gameObject;//clones the object and sets the object interacted with as "original" object
+                    heldObject = Instantiate(original, holdPosition.position, Quaternion.identity);//puts the object in the hold position
 
-                    // Setup Rigidbody
+                    //set up the rigid body
                     heldRb = heldObject.GetComponent<Rigidbody>();
                     if (heldRb == null) heldRb = heldObject.AddComponent<Rigidbody>();
                     heldRb.isKinematic = true;
 
-                    // Add Throwable script if missing
+                    // add throwabletile script
                     heldScript = heldObject.GetComponent<ThrowableTile>();
                     if (heldScript == null) heldScript = heldObject.AddComponent<ThrowableTile>();
 
-                    holdingObject = true;
+                    holding = true;//set holding to true
                     throwCharge = 0f;
 
-                    // Remove the original
+                    //remove the original object
                     Destroy(original);
                 }
             }
@@ -66,7 +64,7 @@ public class PlayerPickup : MonoBehaviour
 
     void HandleHoldingAndThrowing()
     {
-        // keep the object in front of the player
+        // keep the object in front of the player in hold posiotion
         heldObject.transform.position = holdPosition.position;
         heldObject.transform.rotation = Quaternion.identity;
 
@@ -92,7 +90,7 @@ public class PlayerPickup : MonoBehaviour
             heldObject = null;
             heldRb = null;
             heldScript = null;
-            holdingObject = false;
+            holding = false;
         }
     }
 }

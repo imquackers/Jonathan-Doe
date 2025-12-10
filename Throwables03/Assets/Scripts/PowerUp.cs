@@ -22,7 +22,7 @@ public class PowerUp : MonoBehaviour
             {
                 StartCoroutine(ApplySpeedBoost(player));
             }
-            if(SpawnsEnemies = true)
+            if(SpawnsEnemies == true)
             // spawn a single enemy
             if (enemyPrefab && singleEnemySpawnPoint)
             {

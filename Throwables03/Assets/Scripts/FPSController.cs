@@ -8,7 +8,6 @@ public class FPSController : MonoBehaviour
     public float speed = 6f;
     public float jumpForce = 1f;
     public float gravity = -9.81f;
-    public float health = 100f;
 
     private float originalSpeed;
 
