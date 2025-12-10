@@ -1,0 +1,15 @@
+[Libraries]
+/[Ll]ibrary/
+[Ll]ibrary/
+
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+UserSettings/
+*.csproj
+*.sln
+*.user
+/Packages/manifest.json
+/Packages/packages-lock.json
