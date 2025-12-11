@@ -11,7 +11,7 @@ public class WaveSpawner : MonoBehaviour
     public int baseEnemiesPerWave = 2;
 
     public float timeBetweenSpawns = 4f;
-    public float timeBetweenWaves = 8f;
+    public float timeBetweenWaves = 10f;
     public float speedIncreasePerWave = 0.1f;
 
     public float spawnHeightOffset = 2f;
@@ -19,10 +19,10 @@ public class WaveSpawner : MonoBehaviour
     public bool spawningEnabled = false;
 
     private int waveNumber = 0;
-    private int totalWaves = 3;      // 3 waves per fight
-    private int enemiesAlive = 0;    // Track active enemies
+    private int totalWaves = 3;      // 3 waves total
+    private int enemiesAlive = 0;    // track active enemies
 
-    public DoorController doorToOpen; // Assign door in inspector
+    public DoorController doorToOpen; // door
 
     public int GetCurrentWave()
     {
@@ -58,7 +58,7 @@ public class WaveSpawner : MonoBehaviour
                 if (e != null)
                 {
                     e.SetSpeedMultiplier(waveSpeedMultiplier);
-                    e.OnEnemyDeath += EnemyDied; // ✅ subscribe to death event
+                    e.OnEnemyDeath += EnemyDied; // checking if all waves completed and enemies dead
                 }
 
                 enemiesAlive++;
